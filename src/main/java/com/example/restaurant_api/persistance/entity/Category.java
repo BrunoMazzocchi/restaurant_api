@@ -20,7 +20,7 @@ public class Category {
     @Column
     private String description;
 
-    @OneToMany(mappedBy = "categoryId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "category_id", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Food> food;
 
 }
