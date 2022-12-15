@@ -1,6 +1,7 @@
 package com.example.restaurant_api.web.controller;
 
 import com.example.restaurant_api.domain.service.*;
+import com.example.restaurant_api.persistance.dto.*;
 import com.example.restaurant_api.persistance.entity.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
@@ -15,19 +16,19 @@ public class MealController {
     private MealService mealService;
 
     @GetMapping(value = "/all")
-    public ResponseEntity<List<Meal>> getAllMeals() {
+    public ResponseEntity<List<MealDTO>> getAllMeals() {
         return new ResponseEntity<>(mealService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Meal> getMealById(@PathVariable("id") int id) {
+    public ResponseEntity<MealDTO> getMealById(@PathVariable("id") int id) {
         return mealService.findById(id)
                 .map(meal -> new ResponseEntity<>(meal, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping(value = "/save")
-    public ResponseEntity<Meal> save(@RequestBody Meal meal){
+    public ResponseEntity<Meal> save(@RequestBody MealDTO meal){
         return new ResponseEntity<>(mealService.save(meal), HttpStatus.CREATED);
     }
 
