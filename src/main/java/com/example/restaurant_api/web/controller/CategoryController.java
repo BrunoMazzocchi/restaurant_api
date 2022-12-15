@@ -2,6 +2,7 @@ package com.example.restaurant_api.web.controller;
 
 
 import com.example.restaurant_api.domain.service.*;
+import com.example.restaurant_api.persistance.dto.*;
 import com.example.restaurant_api.persistance.entity.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
@@ -17,19 +18,19 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @RequestMapping(value = "/all", method = RequestMethod.GET)
-    public ResponseEntity<List<Category>> findAll() {
+    public ResponseEntity<List<CategoryDTO>> findAll() {
         return new ResponseEntity<>(categoryService.findAll(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}")
-    public ResponseEntity<Category> findById(@PathVariable("id") int id) {
+    public ResponseEntity<CategoryDTO> findById(@PathVariable("id") int id) {
         return categoryService.findById(id)
                 .map(category -> new ResponseEntity<>(category, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @RequestMapping(value = "/save")
-    public ResponseEntity<Category> save(@RequestBody Category category){
+    public ResponseEntity<Category> save(@RequestBody CategoryDTO category){
         return new ResponseEntity<>(categoryService.save(category), HttpStatus.CREATED);
     }
 

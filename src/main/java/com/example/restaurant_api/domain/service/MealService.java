@@ -26,13 +26,13 @@ public class MealService {
     }
 
     public Optional<MealDTO> findById(Integer id) {
-        List<MealDTO> mealDTOList = new ArrayList<>();
-        mealRepository.findAll().stream().map(meal -> {
-            MealDTO mealDTO = new MealDTO();
+        MealDTO mealDTO = new MealDTO();
+        Meal meal = mealRepository.findById(id).orElse(null);
+        if (meal != null) {
             BeanUtils.copyProperties(meal, mealDTO);
-            return mealDTO;
-        }).forEach(mealDTOList::add);
-        return mealDTOList.stream().filter(mealDTO -> mealDTO.getMeal_id().equals(id)).findFirst();
+            return Optional.of(mealDTO);
+        }
+        return mealDTO.getMeal_id() != null ? Optional.of(mealDTO) : Optional.empty();
     }
 
     public Meal save (MealDTO mealDTO) {
