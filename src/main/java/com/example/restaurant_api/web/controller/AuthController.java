@@ -57,7 +57,7 @@ public class AuthController {
         if (user.getActive()) {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            loginRequest.getEmail(),
+                            user.getNickname(),
                             loginRequest.getPassword()
                     )
             );

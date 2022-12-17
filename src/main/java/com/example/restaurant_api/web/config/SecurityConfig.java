@@ -5,11 +5,10 @@ import com.example.restaurant_api.web.security.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.context.annotation.*;
 import org.springframework.security.authentication.*;
-import org.springframework.security.config.annotation.authentication.builders.*;
 import org.springframework.security.config.annotation.authentication.configuration.*;
-import org.springframework.security.config.annotation.method.configuration.*;
 import org.springframework.security.config.annotation.web.builders.*;
 import org.springframework.security.config.annotation.web.configuration.*;
+import org.springframework.security.config.http.*;
 import org.springframework.security.crypto.bcrypt.*;
 import org.springframework.security.crypto.password.*;
 import org.springframework.security.web.*;
@@ -41,8 +40,7 @@ public class SecurityConfig {
 
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception{
-        httpSecurity.authorizeHttpRequests().requestMatchers("/auth/signin", "/auth/signup").permitAll();
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
 
 
         httpSecurity.cors()
@@ -50,12 +48,14 @@ public class SecurityConfig {
                 .csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(jwtEntryPoint)
                 .and()
-                .formLogin()
-                .permitAll();
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeHttpRequests().requestMatchers("/auth/signin", "/auth/signup").permitAll()
+                .and()
+                .authorizeHttpRequests().requestMatchers("/api/**").authenticated()
+                .and()
+                .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 
-        httpSecurity.authorizeHttpRequests().anyRequest().authenticated();
-
-        httpSecurity.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
         return httpSecurity.build();
     }
 
