@@ -9,7 +9,7 @@ import java.util.*;
 
 @Entity
 @Data
-@Table(name = "customer")
+@Table(name = "user")
 public class User {
     @Id
     @Column(name = "user_id")
@@ -19,7 +19,7 @@ public class User {
     private String name;
     @Column
     private String nickname;
-    @Column(name = "customer_email")
+    @Column(name = "user_email")
     private String email;
     @Column
     private String password;
