@@ -3,6 +3,8 @@ package com.example.restaurant_api.persistance.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.*;
+
 @Entity
 @Data
 @Table(name = "food")
@@ -31,4 +33,5 @@ public class Food {
     private Integer category_id;
     @Column
     private Integer meal_id;
+
 }

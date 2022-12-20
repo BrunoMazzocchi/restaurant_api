@@ -33,4 +33,7 @@ public class UserDeviceService {
         return userDevice;
     }
 
+    public void saveUserDevice(UserDevice userDevice) {
+        userDeviceRepository.save(userDevice);
+    }
 }

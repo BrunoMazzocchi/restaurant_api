@@ -21,11 +21,14 @@ public class FoodController {
         return new ResponseEntity<>(foodService.save(foodDTO), HttpStatus.CREATED);
     }
 
+
     @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Integer id) {
         foodService.deleteById(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+
 
     @GetMapping(value = "/byCategory/{categoryId}")
     public ResponseEntity<List<FoodDTO>> getFoodsByCategory(@PathVariable("categoryId") int categoryId) {
@@ -33,6 +36,7 @@ public class FoodController {
                 .map(foods -> new ResponseEntity<>(foods, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
 
     @GetMapping(value = "/byMeal/{mealId}")
     public ResponseEntity<List<FoodDTO>> getFoodsByMeal(@PathVariable("mealId") int mealId) {

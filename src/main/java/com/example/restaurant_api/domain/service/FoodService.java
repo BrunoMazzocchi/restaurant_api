@@ -27,22 +27,29 @@ public class FoodService {
     public Optional<List<FoodDTO>> findAllByCategoryId(Integer id) {
         List<FoodDTO> foodDTOList = new ArrayList<>();
 
-        foodRepository.getAllByCategoryId(id).stream().map(food -> {
-            FoodDTO foodDTO = new FoodDTO();
-            BeanUtils.copyProperties(food, foodDTO);
-            return foodDTO;
-        }).forEach(foodDTOList::add);
+
+        foodRepository.getAllByCategoryId(id).ifPresent(foods -> {
+            foods.forEach(food -> {
+                FoodDTO foodDTO = new FoodDTO();
+                BeanUtils.copyProperties(food, foodDTO);
+                foodDTOList.add(foodDTO);
+            });
+        });
+
         return Optional.of(foodDTOList);
     }
 
     public Optional<List<FoodDTO>> findAllByMealId(Integer id) {
         List<FoodDTO> foodDTOList = new ArrayList<>();
 
-        foodRepository.getAllByMealId(id).stream().map(food -> {
-            FoodDTO foodDTO = new FoodDTO();
-            BeanUtils.copyProperties(food, foodDTO);
-            return foodDTO;
-        }).forEach(foodDTOList::add);
+        foodRepository.getAllByCategoryId(id).ifPresent(foods -> {
+            foods.forEach(food -> {
+                FoodDTO foodDTO = new FoodDTO();
+                BeanUtils.copyProperties(food, foodDTO);
+                foodDTOList.add(foodDTO);
+            });
+        });
+
         return Optional.of(foodDTOList);
     }
 

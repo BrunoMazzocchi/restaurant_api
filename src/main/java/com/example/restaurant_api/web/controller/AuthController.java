@@ -2,12 +2,10 @@ package com.example.restaurant_api.web.controller;
 
 import com.example.restaurant_api.domain.service.*;
 import com.example.restaurant_api.persistance.data.*;
-import com.example.restaurant_api.persistance.dto.*;
 import com.example.restaurant_api.persistance.entity.*;
 import com.example.restaurant_api.persistance.repository.*;
 import com.example.restaurant_api.web.response.*;
 import com.example.restaurant_api.web.security.*;
-import org.springframework.beans.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.*;
 import org.springframework.security.authentication.*;
@@ -74,8 +72,8 @@ public class AuthController {
 
 
             DeviceInfo deviceInfo = new DeviceInfo();
-            deviceInfo.setDeviceId("1");
-            deviceInfo.setDeviceType("1");
+            deviceInfo.setDeviceId(loginRequest.getDeviceInfo().getDeviceId());
+            deviceInfo.setDeviceType(loginRequest.getDeviceInfo().getDeviceType());
 
 
             //Dev test, still waiting to implement user device creation
@@ -85,15 +83,23 @@ public class AuthController {
 
             userDevice.setUser(user);
             userDevice.setRefreshToken(refreshToken);
+
             refreshToken.setUserDevice(userDevice);
             refreshToken = refreshTokenService.save(refreshToken);
 
-            System.out.println( ResponseEntity.ok(new JwtResponse(jwtToken, refreshToken.getToken(), jwtProvider.getExpiryDuration())));
-
+            userDeviceService.saveUserDevice(userDevice);
 
             return ResponseEntity.ok(new JwtResponse(jwtToken, refreshToken.getToken(), jwtProvider.getExpiryDuration()));
         }
         return ResponseEntity.badRequest().body(new ApiResponse(false, "User has been deactivated/locked !!"));
+    }
+
+    @PostMapping("/validate")
+    public ResponseEntity<?> verifyToken(@RequestBody LogOutRequest token) {
+        if (jwtProvider.validateJwtToken(token.getToken())) {
+            return ResponseEntity.ok(new ApiResponse(true, "Token is valid"));
+        }
+        return ResponseEntity.badRequest().body(new ApiResponse(false, "Token is invalid"));
     }
 
     @PostMapping("/signup")
@@ -140,4 +146,6 @@ public class AuthController {
         return ResponseEntity.created(location)
                 .body(new ApiResponse(true, "User registered successfully!"));
     }
+
+
 }

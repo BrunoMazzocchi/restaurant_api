@@ -27,6 +27,7 @@ public class UserPrincipal implements UserDetails {
     private Date created_at;
     private Boolean active;
     private Set<Role> roles = new HashSet<>();
+
     @JsonIgnore
     private String password;
 

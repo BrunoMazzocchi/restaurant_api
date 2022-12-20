@@ -52,7 +52,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests().requestMatchers("/auth/signin", "/auth/signup").permitAll()
                 .and()
-                .authorizeHttpRequests().requestMatchers("/api/**").authenticated()
+                .authorizeHttpRequests().requestMatchers("/api/**", "/auth/validate").authenticated()
                 .and()
                 .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 

@@ -23,6 +23,4 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     void saveCustomerPicture(String customer_name, Integer userId);
 
     User save(User user);
-
-
 }

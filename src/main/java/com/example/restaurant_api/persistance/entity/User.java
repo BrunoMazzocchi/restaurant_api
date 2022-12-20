@@ -3,7 +3,6 @@ package com.example.restaurant_api.persistance.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.sql.*;
 import java.sql.Date;
 import java.util.*;
 
@@ -38,7 +37,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "roleId"))
     private Set<Role> roles = new HashSet<>();
 
-
     public void activate() {
         this.active = true;
     }
@@ -46,4 +44,8 @@ public class User {
     public void deactivate() {
         this.active = false;
     }
+
+    @OneToMany(mappedBy = "user_id", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Order> orders;
+
 }
