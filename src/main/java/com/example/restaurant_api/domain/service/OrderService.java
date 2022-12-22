@@ -2,9 +2,11 @@ package com.example.restaurant_api.domain.service;
 
 import com.example.restaurant_api.persistance.dto.*;
 import com.example.restaurant_api.persistance.entity.*;
+import com.example.restaurant_api.persistance.entity.User;
 import com.example.restaurant_api.persistance.repository.*;
 import org.springframework.beans.*;
 import org.springframework.beans.factory.annotation.*;
+import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.*;
 
 import java.util.*;
@@ -14,17 +16,21 @@ public class OrderService {
     @Autowired
     private OrderRepository orderRepository;
 
-    public Optional<List<OrderDTO>> getOrdersByUserId(int id) {
+    @Autowired
+    private UserRepository userRepository;
+
+
+    public Optional<List<OrderDTO>> getOrdersByUserId(String userName, String orderStatus) {
         List<OrderDTO> orderDTOS = new ArrayList<>();
 
-        orderRepository.findByUser_id(id).ifPresent(orders -> {
+        User user = userRepository.findUserByNickname(userName).stream().findFirst().orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        orderRepository.findByUser_id(user.getUserId(), orderStatus).ifPresent(orders -> {
             orders.forEach(order -> {
                 OrderDTO orderDTO = new OrderDTO();
                 BeanUtils.copyProperties(order, orderDTO);
                 orderDTOS.add(orderDTO);
             });
         });
-
         return Optional.of(orderDTOS);
     }
 

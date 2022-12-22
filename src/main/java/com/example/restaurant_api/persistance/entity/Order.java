@@ -3,7 +3,6 @@ package com.example.restaurant_api.persistance.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.sql.*;
 import java.sql.Date;
 import java.util.*;
 
