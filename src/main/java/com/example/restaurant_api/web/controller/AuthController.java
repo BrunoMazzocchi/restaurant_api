@@ -52,6 +52,8 @@ public class AuthController {
         User user = userRepository.findUserByEmail(loginRequest.getEmail())
                 .orElseThrow(() -> new RuntimeException("Fail! -> Cause: User not found."));
 
+
+
         if (user.getActive()) {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -103,9 +105,14 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
+
+    // TODO : Avoid duplicate email/nickname
     public ResponseEntity<?> registerUser(@RequestBody SignUpUserRequest signUpRequest) {
-        if(userService.userExistsByEmail(signUpRequest.getEmail())) {
+        if(userService.userExistsByEmail(signUpRequest.getEmail())){
             return new ResponseEntity<String>("Fail -> Email is already in use!",
+                    HttpStatus.BAD_REQUEST);
+        } else if ( userService.userExistsByNickname(signUpRequest.getNickname())) {
+            return new ResponseEntity<String>("Fail -> Nickname is already in use!",
                     HttpStatus.BAD_REQUEST);
         }
 
@@ -115,6 +122,7 @@ public class AuthController {
         user.setEmail(signUpRequest.getEmail());
         user.setPassword(encoder.encode(signUpRequest.getPassword()));
 
+        user.setImage("https://www.pngmart.com/files/21/Account-Avatar-Profile-PNG-Clipart.png");
         user.setPhone(signUpRequest.getPhone());
         user.setNickname(signUpRequest.getNickname());
         Set<String> strRoles = Collections.singleton(signUpRequest.getRole());
@@ -143,8 +151,7 @@ public class AuthController {
                 .fromCurrentContextPath().path("/user/me")
                 .buildAndExpand(result.getUserId()).toUri();
 
-        return ResponseEntity.created(location)
-                .body(new ApiResponse(true, "User registered successfully!"));
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 

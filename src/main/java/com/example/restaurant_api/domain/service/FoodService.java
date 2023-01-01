@@ -42,7 +42,7 @@ public class FoodService {
     public Optional<List<FoodDTO>> findAllByMealId(Integer id) {
         List<FoodDTO> foodDTOList = new ArrayList<>();
 
-        foodRepository.getAllByCategoryId(id).ifPresent(foods -> {
+        foodRepository.getAllByMealId(id).ifPresent(foods -> {
             foods.forEach(food -> {
                 FoodDTO foodDTO = new FoodDTO();
                 BeanUtils.copyProperties(food, foodDTO);

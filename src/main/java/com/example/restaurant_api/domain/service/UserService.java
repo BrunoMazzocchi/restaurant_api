@@ -3,6 +3,7 @@ package com.example.restaurant_api.domain.service;
 import com.example.restaurant_api.persistance.dto.*;
 import com.example.restaurant_api.persistance.entity.*;
 import com.example.restaurant_api.persistance.repository.*;
+import jakarta.persistence.*;
 import org.springframework.beans.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.stereotype.*;
@@ -14,6 +15,10 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+
+
+    private EntityManager entityManager;
 
     public UserDTO findUserByUserId(int id) {
         UserDTO customerDTO = new UserDTO();
@@ -33,6 +38,9 @@ public class UserService {
 
     public boolean userExistsByEmail(String email) {
         return userRepository.existsByEmail(email);
+    }
+    public boolean userExistsByNickname(String nickname) {
+        return userRepository.existsByNickname(nickname);
     }
 
     public User save (User user) {

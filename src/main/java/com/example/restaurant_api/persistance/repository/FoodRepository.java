@@ -14,7 +14,7 @@ public interface FoodRepository extends JpaRepository<Food, Integer> {
 
     @Query(value = "SELECT * FROM foodmenu.food where category_id = ?;", nativeQuery = true)
     Optional<List<Food>> getAllByCategoryId (Integer id);
-    @Query(value = "SELECT * FROM foodmenu.food where meal_id = 1;", nativeQuery = true)
+    @Query(value = "SELECT * FROM foodmenu.food where meal_id = ?;", nativeQuery = true)
     Optional<List<Food>>  getAllByMealId(Integer id);
     Optional<Food> findById(Integer id);
     List<Food> findAll();

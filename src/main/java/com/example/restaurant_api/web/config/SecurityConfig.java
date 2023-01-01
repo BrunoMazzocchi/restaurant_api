@@ -2,6 +2,7 @@ package com.example.restaurant_api.web.config;
 
 import com.example.restaurant_api.domain.service.*;
 import com.example.restaurant_api.web.security.*;
+import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.context.annotation.*;
 import org.springframework.security.authentication.*;
@@ -17,7 +18,9 @@ import org.springframework.security.web.authentication.*;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    
 
+    @Autowired
     private final UserDetailsServiceImpl userDetailsService;
 
     private final JwtAuthenticationEntryPoint jwtEntryPoint;
@@ -50,7 +53,7 @@ public class SecurityConfig {
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .authorizeHttpRequests().requestMatchers("/auth/signin", "/auth/signup").permitAll()
+                .authorizeHttpRequests().requestMatchers("/auth/**").permitAll()
                 .and()
                 .authorizeHttpRequests().requestMatchers("/api/**", "/auth/validate").authenticated()
                 .and()
